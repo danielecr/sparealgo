@@ -46,5 +46,14 @@ void int_code(int *msg, int l, int h) {
 int main(){              
   int msg[] = { 2,  3, 4, 5, 6, 8, 10, 11 };     
   outbuf = malloc(100); 
-  int s = sizeof(msg) / sizeof(msg[0]);                                                                                                                                        int_code(msg, 0, s-1);                                                                                                                                                       int last = outbufpos / 8 + 1;                                                                                                                                                printf("outbufpos: %d last: %d", outbufpos, last);                                                                                                                           outbuf[last] = '\0';                                                                                                                                                         printf("\n%d|%d|%d_", s, msg[0], msg[s-1]);                                                                                                                                  for (int i=0; i< last; i++) {                                                                                                                                                        printf("%X", outbuf[i]);                                                                                                                                             }                                                                                                                                                                            for (int i=0; i< s; i++) {                                                                                                                                                           //printf("is it %d\n", msg[i]);                                                                                                                                      }                                                                                                                                                                            printf("[\ndone\n");
-    
+  int s = sizeof(msg) / sizeof(msg[0]);
+  int_code(msg, 0, s-1);   
+  int last = outbufpos / 8 + 1;  
+  printf("outbufpos: %d last: %d", outbufpos, last);  
+  outbuf[last] = '\0';   
+  printf("\n%d|%d|%d_", s, msg[0], msg[s-1]);   
+  for (int i=0; i< last; i++) {    
+    printf("%X", outbuf[i]);    
+  }       
+  printf("[\ndone\n");
+}
