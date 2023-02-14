@@ -4,11 +4,11 @@
 unsigned long bit_a[] = {0,0,0,0};
 
 void add_ipt(unsigned char n) {
+	unsigned char z = n&7; // last 3
+        unsigned char y = (n>>3)&3;
 	unsigned char x = n>>5;
-	unsigned char y = n<<3; y >>=6; y<<=3; //otherwise compiler will choose SAL and then SAR (and not SHR)
-	unsigned char z = n<<5; z>>=5;
 	// ba[x](y)(z) : xnd int, ynd byte, znd bit
-	printf("inserting %d:%c with x: %d, y: %d z:%d ....%d / %d\n", n, n,  x, y, z, n&3, n<<3>>6);
+	//printf("inserting %d:%c with x: %d, y: %d z:%d ....%d / %d\n", n, n,  x, y, z, n&3, n<<3>>6);
 	bit_a[x] = bit_a[x] | (1<<(8*y + z));
 }
 
