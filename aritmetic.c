@@ -3,12 +3,12 @@
 
 unsigned long bit_a[] = {0,0,0,0};
 
-void add_ipt(char n) {
+void add_ipt(unsigned char n) {
 	unsigned char x = n>>5;
-	unsigned char y = (n<<3)>>3;
-	unsigned char z = (n<<5)>>5;
+	unsigned char y = n<<3; y >>=6; y<<=3; //otherwise compiler will choose SAL and then SAR (and not SHR)
+	unsigned char z = n<<5; z>>=5;
 	// ba[x](y)(z) : xnd int, ynd byte, znd bit
-	printf("inserting %d:%c with x: %d, y: %d z:%d\n", n, n,  x, y, z);
+	printf("inserting %d:%c with x: %d, y: %d z:%d ....%d / %d\n", n, n,  x, y, z, n&3, n<<3>>6);
 	bit_a[x] = bit_a[x] | (1<<(8*y + z));
 }
 
@@ -63,8 +63,22 @@ struct symprob** calcprob(char* ch) {
 void arith_code(struct symprob **prob, char *ipt) {
 }
 
-char * build_nth() {
-	
+char * build_nth(unsigned char l) {
+	unsigned char *nth = malloc(l);
+	unsigned long bac[] = {bit_a[0], bit_a[1], bit_a[2], bit_a[3]};
+	unsigned char x = 0, c = 0;
+	while(x<4) {
+		int y = 0;
+		while (bac[x]>>y > 0 || bac[x]>>y > 0) {
+			if(bac[x]>>y & 1) {
+				nth[c] = (x*32)+y;
+				c++;
+			}
+			y++;
+		}
+		x++;
+	}
+	return nth;
 }
 
 char * bitstring(int x) {
@@ -85,7 +99,10 @@ int main() {
 	// so build:
 	//  * nth_s[i] = i-th element value
 	//  * fth[i] = i-th element frequency
-	char * nth_s = build_nth();
+	char * nth_s = build_nth(cnt);
+	for( int i=0; i<cnt; i++) {
+		printf("%c", nth_s[i]);
+	}
 	//
 	//arith_code(prob, input);
 
