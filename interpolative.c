@@ -2,7 +2,7 @@
 #include <stdio.h>
 
 int outbufpos = 0;
-char *outbuf;
+unsigned char *outbuf;
 
 void emit(int n, int bitcnt) {
    int blk1 = outbufpos / 8;
@@ -40,6 +40,39 @@ void int_code(int *msg, int l, int h) {
 		// encode right side
 		int_code(msg, m_i+1, h);
 	}
+}
+
+char consume_bits(unsigned char *code, int consumed, char base, char l_b) {
+
+}
+
+int int_decode_consume(char *msg, int l, int h, unsigned char *code, int consumed, int codelen) {
+	int m_i = (l + h) /2;
+	int u_b = msg[h] - (h - m_i);
+	int l_b = msg[l] + (m_i - l);
+	int bits = bitcnt(u_b - l_b);
+	msg[m_i] = consume_bits(code, consumed, bits, msg[l], l_b);
+	consumed += bits;
+	if(consumed>=codelen) return;
+	if(m_i - l > 2) {
+		// encode left side
+		int con = int_decode_consume(msg, l, m_i-1, code, consumed, codelen);
+		consumed-=con;
+	}
+	if (h - m_i > 2) {
+		// encode right side
+		int con = int_decode_consune(msg, m_i+1, h, code, consumed, codelen);
+		consumed -= con;
+	}
+	return consumed;
+}
+
+// size, first, last, bitcode
+int int_decode(int s, int f, int l, unsigned char *code) {
+	int msg[] = calloc(s);
+	msg[0] = f;
+	msg[s-1] = l;
+	int_decode_consume(msg, 0, s-1, code, 0);
 }
 
 int main(){

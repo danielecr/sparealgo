@@ -63,6 +63,11 @@ struct symprob** calcprob(char* ch) {
 void arith_code(struct symprob **prob, char *ipt) {
 }
 
+char * build_cth(unsigned char l, char *ipt) {
+	unsigned char *cth = calloc(l);
+
+}
+
 char * build_nth(unsigned char l) {
 	unsigned char *nth = malloc(l);
 	unsigned long bac[] = {bit_a[0], bit_a[1], bit_a[2], bit_a[3]};
@@ -98,6 +103,7 @@ int main() {
 	// now the map is for the 1st, the 2nd, the 3rd, ... the cnt-th element
 	// so build:
 	//  * nth_s[i] = i-th element value
+	//  * cth_s[i] count occurrency of i-th element in input
 	//  * fth[i] = i-th element frequency
 	char * nth_s = build_nth(cnt);
 	for( int i=0; i<cnt; i++) {
